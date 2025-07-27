@@ -1,0 +1,244 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Futuristic Green Glassmorphism Design System */
+
+@layer base {
+  :root {
+    /* Green Glassmorphism Theme */
+    --background: 137 15% 8%;
+    --foreground: 138 25% 95%;
+
+    --card: 138 20% 12% / 0.8;
+    --card-foreground: 138 25% 95%;
+
+    --popover: 138 25% 10% / 0.95;
+    --popover-foreground: 138 25% 95%;
+
+    --primary: 142 76% 36%;
+    --primary-foreground: 138 25% 95%;
+    --primary-glow: 142 86% 55%;
+
+    --secondary: 138 20% 15% / 0.8;
+    --secondary-foreground: 138 25% 90%;
+
+    --muted: 138 15% 18% / 0.6;
+    --muted-foreground: 138 20% 70%;
+
+    --accent: 142 86% 55%;
+    --accent-foreground: 137 15% 8%;
+
+    --destructive: 0 84% 60%;
+    --destructive-foreground: 138 25% 95%;
+
+    --border: 138 20% 25% / 0.3;
+    --input: 138 20% 15% / 0.8;
+    --ring: 142 76% 36%;
+
+    --radius: 1rem;
+
+    /* Green Gradients */
+    --gradient-primary: linear-gradient(135deg, hsl(142 76% 36%) 0%, hsl(142 86% 55%) 100%);
+    --gradient-glass: linear-gradient(135deg, hsl(138 20% 12% / 0.8) 0%, hsl(138 25% 10% / 0.6) 100%);
+    --gradient-glow: linear-gradient(135deg, hsl(142 86% 55% / 0.3) 0%, hsl(142 76% 36% / 0.2) 100%);
+    --gradient-subtle: linear-gradient(180deg, hsl(138 15% 10%) 0%, hsl(137 15% 8%) 100%);
+
+    /* Glass Effects */
+    --glass-bg: hsl(138 20% 15% / 0.1);
+    --glass-border: hsl(138 30% 35% / 0.2);
+    --glass-shadow: 0 8px 32px hsl(142 76% 36% / 0.1);
+    --glass-glow: 0 0 20px hsl(142 86% 55% / 0.3);
+
+    /* Animations */
+    --transition-smooth: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-bounce: all 0.6s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    --blur-glass: blur(20px);
+
+    /* iOS Shadows */
+    --shadow-ios: 0 10px 40px hsl(142 76% 36% / 0.15);
+    --shadow-float: 0 20px 60px hsl(142 86% 55% / 0.2);
+  }
+
+  .dark {
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
+
+    --card: 222.2 84% 4.9%;
+    --card-foreground: 210 40% 98%;
+
+    --popover: 222.2 84% 4.9%;
+    --popover-foreground: 210 40% 98%;
+
+    --primary: 210 40% 98%;
+    --primary-foreground: 222.2 47.4% 11.2%;
+
+    --secondary: 217.2 32.6% 17.5%;
+    --secondary-foreground: 210 40% 98%;
+
+    --muted: 217.2 32.6% 17.5%;
+    --muted-foreground: 215 20.2% 65.1%;
+
+    --accent: 217.2 32.6% 17.5%;
+    --accent-foreground: 210 40% 98%;
+
+    --destructive: 0 62.8% 30.6%;
+    --destructive-foreground: 210 40% 98%;
+
+    --border: 217.2 32.6% 17.5%;
+    --input: 217.2 32.6% 17.5%;
+    --ring: 212.7 26.8% 83.9%;
+    --sidebar-background: 240 5.9% 10%;
+    --sidebar-foreground: 240 4.8% 95.9%;
+    --sidebar-primary: 224.3 76.3% 48%;
+    --sidebar-primary-foreground: 0 0% 100%;
+    --sidebar-accent: 240 3.7% 15.9%;
+    --sidebar-accent-foreground: 240 4.8% 95.9%;
+    --sidebar-border: 240 3.7% 15.9%;
+    --sidebar-ring: 217.2 91.2% 59.8%;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+
+  body {
+    @apply bg-background text-foreground;
+    background: var(--gradient-subtle);
+    overflow-x: hidden;
+  }
+}
+
+/* Glass Components */
+@layer components {
+  .glass-card {
+    @apply bg-card border border-border backdrop-blur-xl rounded-2xl shadow-lg;
+    background: var(--gradient-glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-button {
+    @apply relative overflow-hidden transition-all duration-300 backdrop-blur-xl rounded-xl border border-border;
+    background: var(--gradient-glass);
+    border: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glass-button:hover {
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-float);
+  }
+
+  .glass-navbar {
+    @apply backdrop-blur-xl border-b border-border;
+    background: var(--glass-bg);
+    border-bottom: 1px solid var(--glass-border);
+    box-shadow: var(--glass-shadow);
+  }
+
+  .glow-effect {
+    position: relative;
+  }
+
+  .glow-effect::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    background: var(--gradient-glow);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+    z-index: -1;
+  }
+
+  .glow-effect:hover::before {
+    opacity: 1;
+  }
+
+  .floating-animation {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+  }
+
+  .ripple-effect {
+    position: relative;
+    overflow: hidden;
+  }
+
+  .ripple-effect::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    border-radius: 50%;
+    background: var(--primary-glow);
+    opacity: 0.6;
+    transform: translate(-50%, -50%);
+    transition: width 0.6s, height 0.6s, opacity 0.6s;
+  }
+
+  .ripple-effect:active::after {
+    width: 200px;
+    height: 200px;
+    opacity: 0;
+  }
+
+  .bubble-bg {
+    position: fixed;
+    inset: 0;
+    z-index: -1;
+    overflow: hidden;
+  }
+
+  .bubble {
+    position: absolute;
+    border-radius: 50%;
+    background: var(--gradient-glow);
+    animation: bubble-float 20s infinite linear;
+    opacity: 0.1;
+  }
+
+  @keyframes bubble-float {
+    0% {
+      transform: translateY(100vh) rotate(0deg);
+      opacity: 0;
+    }
+    10% {
+      opacity: 0.1;
+    }
+    90% {
+      opacity: 0.1;
+    }
+    100% {
+      transform: translateY(-100px) rotate(360deg);
+      opacity: 0;
+    }
+  }
+
+  .flag-icon {
+    @apply w-8 h-8 rounded-full object-cover border-2 border-accent shadow-lg transition-all duration-300;
+  }
+
+  .flag-icon:hover {
+    @apply scale-110;
+    box-shadow: var(--glass-glow);
+  }
+
+  .ios-input {
+    @apply glass-card px-4 py-3 text-foreground placeholder-muted-foreground focus:outline-none focus:ring-2 focus:ring-primary transition-all duration-300;
+  }
+
+  .ios-input:focus {
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-float);
+  }
+}
