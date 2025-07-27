@@ -1,12 +1,19 @@
 import { useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { User, Lock, Eye, EyeOff, Fingerprint, Bell, BookOpen, TrendingUp, Calendar, Award } from 'lucide-react';
+import { User, Lock, Eye, EyeOff, Fingerprint } from 'lucide-react';
+import { StudentNav } from '@/components/student/StudentNav';
+import { StudentHome } from '@/components/student/StudentHome';
+import { StudentSubjects } from '@/components/student/StudentSubjects';
+import { StudentStatus } from '@/components/student/StudentStatus';
+import { StudentWhatsUp } from '@/components/student/StudentWhatsUp';
+import { StudentSettings } from '@/components/student/StudentSettings';
 
 const StudentPortal = () => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [credentials, setCredentials] = useState({ username: '', password: '' });
+  const [activeSection, setActiveSection] = useState('home');
 
   const handleLogin = (e: React.FormEvent) => {
     e.preventDefault();
@@ -14,19 +21,26 @@ const StudentPortal = () => {
     setIsLoggedIn(true);
   };
 
-  const dashboardData = {
-    grades: [
-      { subject: 'Mathematics', grade: 'A+', progress: 95 },
-      { subject: 'Science', grade: 'A', progress: 92 },
-      { subject: 'English', grade: 'A-', progress: 88 },
-      { subject: 'History', grade: 'A', progress: 90 },
-    ],
-    announcements: [
-      { title: 'Science Fair Registration', date: '2024-01-15', type: 'event' },
-      { title: 'Parent-Teacher Conference', date: '2024-01-20', type: 'meeting' },
-      { title: 'Winter Break Schedule', date: '2024-01-10', type: 'info' },
-    ],
-    attendance: { present: 95, total: 100 },
+  const handleLogout = () => {
+    setIsLoggedIn(false);
+    setActiveSection('home');
+  };
+
+  const renderActiveSection = () => {
+    switch (activeSection) {
+      case 'home':
+        return <StudentHome />;
+      case 'subjects':
+        return <StudentSubjects />;
+      case 'status':
+        return <StudentStatus />;
+      case 'whats-up':
+        return <StudentWhatsUp />;
+      case 'settings':
+        return <StudentSettings />;
+      default:
+        return <StudentHome />;
+    }
   };
 
   if (!isLoggedIn) {
@@ -118,140 +132,13 @@ const StudentPortal = () => {
   return (
     <div className="min-h-screen pt-20 px-6">
       <div className="max-w-7xl mx-auto py-8">
-        {/* Header */}
-        <div className="mb-8">
-          <div className="glass-card p-6">
-            <div className="flex items-center justify-between">
-              <div>
-                <h1 className="text-3xl font-bold text-foreground">Welcome back, Alex!</h1>
-                <p className="text-muted-foreground">Ready to continue your learning journey?</p>
-              </div>
-              <Button variant="glass" size="icon" className="relative">
-                <Bell size={20} />
-                <span className="absolute -top-1 -right-1 w-3 h-3 bg-accent rounded-full animate-pulse"></span>
-              </Button>
-            </div>
-          </div>
-        </div>
-
-        <div className="grid lg:grid-cols-3 gap-8">
-          {/* Main Content */}
-          <div className="lg:col-span-2 space-y-8">
-            {/* Grades Overview */}
-            <div className="glass-card p-6">
-              <div className="flex items-center justify-between mb-6">
-                <h2 className="text-2xl font-bold text-foreground flex items-center">
-                  <TrendingUp className="mr-3 text-accent" size={24} />
-                  Current Grades
-                </h2>
-                <Button variant="neon" size="sm">View Details</Button>
-              </div>
-
-              <div className="grid md:grid-cols-2 gap-4">
-                {dashboardData.grades.map((grade, index) => (
-                  <div key={index} className="glass-card p-4 hover:scale-105 transition-transform duration-300">
-                    <div className="flex items-center justify-between mb-2">
-                      <h3 className="font-semibold text-foreground">{grade.subject}</h3>
-                      <span className="text-lg font-bold text-accent">{grade.grade}</span>
-                    </div>
-                    <div className="w-full bg-muted rounded-full h-2 mb-2">
-                      <div
-                        className="bg-gradient-to-r from-primary to-accent h-2 rounded-full transition-all duration-500"
-                        style={{ width: `${grade.progress}%` }}
-                      ></div>
-                    </div>
-                    <p className="text-sm text-muted-foreground">{grade.progress}% Complete</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Recent Activity */}
-            <div className="glass-card p-6">
-              <h2 className="text-2xl font-bold text-foreground mb-6 flex items-center">
-                <BookOpen className="mr-3 text-accent" size={24} />
-                Recent Activity
-              </h2>
-
-              <div className="space-y-4">
-                {[
-                  { action: 'Completed Math Assignment #12', time: '2 hours ago', type: 'assignment' },
-                  { action: 'Attended Virtual Science Lab', time: '1 day ago', type: 'class' },
-                  { action: 'Submitted English Essay', time: '2 days ago', type: 'assignment' },
-                  { action: 'Participated in Group Discussion', time: '3 days ago', type: 'participation' },
-                ].map((activity, index) => (
-                  <div key={index} className="flex items-center space-x-4 p-4 rounded-xl hover:bg-primary/5 transition-colors">
-                    <div className="w-2 h-2 rounded-full bg-accent"></div>
-                    <div className="flex-1">
-                      <p className="text-foreground font-medium">{activity.action}</p>
-                      <p className="text-sm text-muted-foreground">{activity.time}</p>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Sidebar */}
-          <div className="space-y-8">
-            {/* Attendance */}
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
-                <Calendar className="mr-3 text-accent" size={20} />
-                Attendance
-              </h3>
-              <div className="text-center">
-                <div className="text-3xl font-bold text-accent mb-2">
-                  {Math.round((dashboardData.attendance.present / dashboardData.attendance.total) * 100)}%
-                </div>
-                <p className="text-muted-foreground">
-                  {dashboardData.attendance.present} of {dashboardData.attendance.total} days
-                </p>
-                <div className="w-full bg-muted rounded-full h-3 mt-4">
-                  <div
-                    className="bg-gradient-to-r from-primary to-accent h-3 rounded-full"
-                    style={{ width: `${(dashboardData.attendance.present / dashboardData.attendance.total) * 100}%` }}
-                  ></div>
-                </div>
-              </div>
-            </div>
-
-            {/* Announcements */}
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-bold text-foreground mb-4 flex items-center">
-                <Bell className="mr-3 text-accent" size={20} />
-                Announcements
-              </h3>
-              <div className="space-y-3">
-                {dashboardData.announcements.map((announcement, index) => (
-                  <div key={index} className="p-3 rounded-xl hover:bg-primary/5 transition-colors cursor-pointer">
-                    <h4 className="font-medium text-foreground text-sm">{announcement.title}</h4>
-                    <p className="text-xs text-muted-foreground">{announcement.date}</p>
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Quick Actions */}
-            <div className="glass-card p-6">
-              <h3 className="text-xl font-bold text-foreground mb-4">Quick Actions</h3>
-              <div className="space-y-3">
-                <Button variant="glass" className="w-full justify-start">
-                  <BookOpen className="mr-3" size={16} />
-                  View Assignments
-                </Button>
-                <Button variant="glass" className="w-full justify-start">
-                  <Calendar className="mr-3" size={16} />
-                  Check Schedule
-                </Button>
-                <Button variant="glass" className="w-full justify-start">
-                  <Award className="mr-3" size={16} />
-                  View Certificates
-                </Button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <StudentNav
+          activeSection={activeSection}
+          onSectionChange={setActiveSection}
+          onLogout={handleLogout}
+          studentName="Alex"
+        />
+        {renderActiveSection()}
       </div>
     </div>
   );
